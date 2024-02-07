@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <CustomerAccount xmlns="">
+      <accountId>1</accountId>
+      <accountType>TestAccount</accountType>
+      <balance>100.0</balance>
+    </CustomerAccount>
+  </soapenv:Body>
+</soapenv:Envelope>

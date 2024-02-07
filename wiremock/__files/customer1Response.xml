@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <Customer xmlns="">
+      <customerId>1</customerId>
+      <name>Dag Oldenburg</name>
+      <email>dagoldenburg@test.email</email>
+    </Customer>
+  </soapenv:Body>
+</soapenv:Envelope>

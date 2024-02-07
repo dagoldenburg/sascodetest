@@ -1,0 +1,10 @@
+mock-soap-service:
+  url: http://localhost:8081/mock-soap-service
+  context-path: generated
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+

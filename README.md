@@ -8,6 +8,9 @@ Java 21 and docker
 Start the docker compose, run the application and send a GET request to http://localhost:8080/customer-data/{customerId}
 Filling out customerId with 1 will return a full user, 2 will return a partial content response with missing account information and any other id will return 404.
 
+## Mocking of underlying soap service
+The underlying soap service is mocked using wiremock, details can be found in the wiremock folder.
+
 ## Tests
 Integration tests are located in the CustomerDataControllerTest class, they cover the cases mentioned above.
 

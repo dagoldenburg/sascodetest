@@ -1,4 +1,4 @@
-package dag.oldenburg.sascodetest.core;
+package dag.oldenburg.sascodetest.core.customerdata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import generated.Customer;

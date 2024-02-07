@@ -1,7 +1,7 @@
 package dag.oldenburg.sascodetest.adapters.driving.rest;
 
-import dag.oldenburg.sascodetest.core.CustomerData;
-import dag.oldenburg.sascodetest.core.CustomerDataService;
+import dag.oldenburg.sascodetest.core.customerdata.CustomerData;
+import dag.oldenburg.sascodetest.core.customerdata.CustomerDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,5 +1,6 @@
-package dag.oldenburg.sascodetest.core;
+package dag.oldenburg.sascodetest.core.customerdata;
 
+import dag.oldenburg.sascodetest.core.NotFoundException;
 import generated.Customer;
 import generated.CustomerAccount;
 import generated.GetCustomer;

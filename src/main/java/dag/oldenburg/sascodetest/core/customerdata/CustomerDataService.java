@@ -48,9 +48,12 @@ public class CustomerDataService {
 
       scope.join();
 
-      if (customerSubtask.state() == State.SUCCESS && customerAccountSubtask.state() == State.SUCCESS) {
+      State customerState = customerSubtask.state();
+      State customerAccountState = customerAccountSubtask.state();
+      
+      if (customerState == State.SUCCESS && customerAccountState == State.SUCCESS) {
         return CustomerData.from(customerSubtask.get(),  customerAccountSubtask.get());
-      } else if (customerSubtask.state() == State.SUCCESS && !(customerAccountSubtask.state() == State.SUCCESS)) {
+      } else if (customerState == State.SUCCESS && !(customerAccountState == State.SUCCESS)) {
         return CustomerData.from(customerSubtask.get(),  new CustomerAccount());
       } else {
         throw new NotFoundException(customerSubtask.exception().getMessage());

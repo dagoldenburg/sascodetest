@@ -5,7 +5,9 @@ import generated.Customer;
 import generated.CustomerAccount;
 import generated.GetCustomer;
 import generated.GetCustomerAccount;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Subtask;
+import java.util.concurrent.StructuredTaskScope.Subtask.State;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
@@ -40,16 +42,22 @@ public class CustomerDataService {
     getCustomer.setCustomerId(customerId);
     getCustomerAccount.setCustomerId(customerId);
 
-    CompletableFuture<Customer> customerFuture = CompletableFuture.supplyAsync(
-            () -> (Customer) webServiceTemplate.marshalSendAndReceive(getCustomer))
-        .exceptionally(CustomerDataService::handleCustomerExceptions);
+    try (StructuredTaskScope scope = new StructuredTaskScope.ShutdownOnFailure()) {
+      Subtask<Customer> customerSubtask = scope.fork(() -> webServiceTemplate.marshalSendAndReceive(getCustomer));
+      Subtask<CustomerAccount> customerAccountSubtask = scope.fork(() -> webServiceTemplate.marshalSendAndReceive(getCustomerAccount));
 
-    CompletableFuture<CustomerAccount> customerAccountFuture = CompletableFuture.supplyAsync(
-            () -> (CustomerAccount) webServiceTemplate.marshalSendAndReceive(getCustomerAccount))
-        .exceptionally(CustomerDataService::handleCustomerAccountExceptions);
+      scope.join();
 
-    return customerFuture.thenCombine(customerAccountFuture, CustomerData::from)
-        .join();
+      if (customerSubtask.state() == State.SUCCESS && customerAccountSubtask.state() == State.SUCCESS) {
+        return CustomerData.from(customerSubtask.get(),  customerAccountSubtask.get());
+      } else if (customerSubtask.state() == State.SUCCESS && !(customerAccountSubtask.state() == State.SUCCESS)) {
+        return CustomerData.from(customerSubtask.get(),  new CustomerAccount());
+      } else {
+        throw new NotFoundException(customerSubtask.exception().getMessage());
+      }
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }
